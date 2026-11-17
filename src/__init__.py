@@ -1,0 +1,1 @@
+print("Le package 'mon_package' a été chargé")
