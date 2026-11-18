@@ -1,15 +1,36 @@
 import pandas as pd
-import sqlite3
 import os
+from sqlalchemy import create_engine, text
 
-def load_datas(raw_path: str, db_path: str,sql_path:str) -> pd.DataFrame:
+def load_datas(raw_path: str, db_path: str, sql_path: str = None) -> pd.DataFrame:
+    """Load raw CSV, create SQLite DB via SQLAlchemy, return full DataFrame.
+
+    Rationale: The CSV is the source of truth. We create the DB as an
+    intermediate artifact for SQL-based exploration, but return ALL columns
+    (not a subset) so the pipeline has access to every feature.
+
+    Parameters
+    ----------
+    raw_path : str
+        Path to the raw CSV file (german.data or german.csv).
+    db_path : str
+        Path to the SQLite database to create.
+    sql_path : str, optional
+        Path to a SQL schema file. If None, a default schema is used.
+
+    Returns
+    -------
+    pd.DataFrame
+        Full DataFrame with all columns renamed and target created.
+    """
     # 1. Charger le CSV
     df = pd.read_csv(raw_path)
-    
-    # 2. Supprimer l'index inutile
-    df = df.drop(columns=['Unnamed: 0'])
-    
-    # 3. Renommer les colonnes pour la lisibilité
+
+    # 2. Supprimer l'index inutile si present
+    if 'Unnamed: 0' in df.columns:
+        df = df.drop(columns=['Unnamed: 0'])
+
+    # 3. Renommer les colonnes pour la lisibilite
     column_mapping = {
         'Attribute1': 'checking_status',
         'Attribute2': 'duration',
@@ -33,48 +54,33 @@ def load_datas(raw_path: str, db_path: str,sql_path:str) -> pd.DataFrame:
         'Attribute20': 'foreign_worker',
         'class': 'class'
     }
-    #rename the columns
     df = df.rename(columns=column_mapping)
-    
-    # 4. Créer la variable cible (0 = Good, 1 = Bad/Default)
+
+    # 4. Creer la variable cible (0 = Good, 1 = Bad/Default)
     df['res'] = (df['class'] == 2).astype(int)
-    
-    # 5. Supprimer la colonne 'class' originale (remplacée par 'default')
+
+    # 5. Supprimer la colonne 'class' originale
     df = df.drop(columns=['class'])
-    
-    # 6. Vérifier les types
-    # (les catégorielles sont déjà en string, les numériques en int)
-    
-    # 7. Créer la base SQLite
+
+    # 6. Creer la base SQLite via SQLAlchemy
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
-    #link to the sql
-    conn = sqlite3.connect(db_path)
-    
-    # 8. Lire le schéma SQL
-    with open(sql_path, 'r') as f:
-        schema = f.read()
-        print(schema)
-    conn.executescript(schema)
-    
-    # 9. Insérer les données
-    df.to_sql('clients', conn, if_exists='replace', index=False)
-    
-    # 10. Créer des index pour la performance
-    conn.execute('CREATE INDEX IF NOT EXISTS idx_age ON clients(age)')
-    conn.execute('CREATE INDEX IF NOT EXISTS idx_res ON clients(res)')
-    conn.execute('CREATE INDEX IF NOT EXISTS idx_checking ON clients(checking_status)')
-    conn.commit()
-    
-    # 11. Lire les données avec une requête SQL 
-    query = """
-SELECT 
-    c.age, c.credit_amount, c.employment, c.housing,
-    c.duration, c.installment_rate, c.property,
-    c.res
-FROM clients c
-WHERE c.credit_amount > 0
-"""
-    result = pd.read_sql_query(query, conn)
-    conn.close()
-    
+    engine = create_engine(f"sqlite:///{db_path}")
+
+    # 7. Ecrire le DataFrame dans la DB
+    df.to_sql('clients', engine, if_exists='replace', index=False)
+
+    # 8. Creer des index pour la performance
+    with engine.connect() as conn:
+        conn.execute(text('CREATE INDEX IF NOT EXISTS idx_age ON clients(age)'))
+        conn.execute(text('CREATE INDEX IF NOT EXISTS idx_res ON clients(res)'))
+        conn.execute(text('CREATE INDEX IF NOT EXISTS idx_checking ON clients(checking_status)'))
+        conn.commit()
+
+    # 9. Lire TOUTES les colonnes depuis la DB (pas de filtre)
+    # Rationale: la source de verite est le CSV, la DB est un artefact.
+    # On retourne le DataFrame complet pour que la pipeline ait acces
+    # a toutes les features.
+    result = pd.read_sql_query("SELECT * FROM clients", engine)
+    engine.dispose()
+
     return result

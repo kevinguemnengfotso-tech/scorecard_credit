@@ -1,0 +1,111 @@
+variable,bin,woe,count,event_rate,points
+checking_status,"<StringArray>
+['A14']
+Length: 1, dtype: str",1.1841,276,0.1159,81.28
+checking_status,"<StringArray>
+['A13']
+Length: 1, dtype: str",0.1335,44,0.2727,56.9
+checking_status,"<StringArray>
+['A12']
+Length: 1, dtype: str",-0.4152,188,0.3936,44.17
+checking_status,"<StringArray>
+['A11']
+Length: 1, dtype: str",-0.7639,192,0.4792,36.08
+duration,"(-inf, 8.50)",1.4553,66,0.0909,91.95
+duration,"[8.50, 11.50)",0.4998,63,0.2063,66.9
+duration,"[11.50, 16.50)",0.2513,180,0.25,60.39
+duration,"[16.50, 34.50)",-0.1761,272,0.3382,49.18
+duration,"[34.50, 47.50)",-0.4746,76,0.4079,41.36
+duration,"[47.50, inf)",-0.9871,43,0.5349,27.93
+credit_history,"<StringArray>
+['A34']
+Length: 1, dtype: str",0.6991,205,0.1756,67.27
+credit_history,"<StringArray>
+['A32']
+Length: 1, dtype: str",-0.0828,362,0.3177,52.21
+credit_history,"<StringArray>
+['A33']
+Length: 1, dtype: str",-0.1317,67,0.3284,51.26
+credit_history,"<StringArray>
+['A31', 'A30']
+Length: 2, dtype: str",-1.0909,66,0.5606,32.78
+purpose,"<StringArray>
+['A41', 'A48']
+Length: 2, dtype: str",0.5545,81,0.1975,68.63
+purpose,"<StringArray>
+['A43']
+Length: 1, dtype: str",0.3848,186,0.2258,64.09
+purpose,"<StringArray>
+['A44', 'A42', 'A410']
+Length: 3, dtype: str",-0.1116,142,0.3239,50.82
+purpose,"<StringArray>
+['A40']
+Length: 1, dtype: str",-0.1804,171,0.3392,48.98
+purpose,"<StringArray>
+['A49', 'A45']
+Length: 2, dtype: str",-0.2412,85,0.3529,47.35
+purpose,"<StringArray>
+['A46']
+Length: 1, dtype: str",-0.9045,35,0.5143,29.62
+credit_amount,"(-inf, 959.50)",-0.311,84,0.369,46.08
+credit_amount,"[959.50, 1373.00)",0.1287,95,0.2737,57.0
+credit_amount,"[1373.00, 2730.50)",0.2398,230,0.2522,59.76
+credit_amount,"[2730.50, 3444.00)",0.2513,72,0.25,60.04
+credit_amount,"[3444.00, 3913.50)",2.0431,38,0.0526,104.55
+credit_amount,"[3913.50, 7760.50)",-0.3118,130,0.3692,46.06
+credit_amount,"[7760.50, inf)",-0.9651,51,0.5294,29.83
+savings,"<StringArray>
+['A64']
+Length: 1, dtype: str",1.009,37,0.1351,78.25
+savings,"<StringArray>
+['A65']
+Length: 1, dtype: str",0.8622,124,0.1532,74.69
+savings,"<StringArray>
+['A63']
+Length: 1, dtype: str",0.7332,41,0.1707,71.56
+savings,"<StringArray>
+['A62']
+Length: 1, dtype: str",-0.0981,81,0.321,51.43
+savings,"<StringArray>
+['A61']
+Length: 1, dtype: str",-0.3018,417,0.3669,46.49
+employment,"<StringArray>
+['A74']
+Length: 1, dtype: str",0.517,113,0.2035,64.03
+employment,"<StringArray>
+['A75']
+Length: 1, dtype: str",0.1942,184,0.2609,57.64
+employment,"<StringArray>
+['A73']
+Length: 1, dtype: str",0.0747,246,0.2846,55.28
+employment,"<StringArray>
+['A72']
+Length: 1, dtype: str",-0.579,120,0.4333,42.35
+employment,"<StringArray>
+['A71']
+Length: 1, dtype: str",-0.6848,37,0.4595,40.25
+installment_rate,"(-inf, 1.50)",0.2921,99,0.2424,64.92
+installment_rate,"[1.50, 2.50)",0.2118,167,0.2575,61.86
+installment_rate,"[2.50, 3.50)",-0.1001,112,0.3214,49.99
+installment_rate,"[3.50, inf)",-0.1495,322,0.3323,48.11
+personal_status_sex,"<StringArray>
+['A93']
+Length: 1, dtype: str",0.1634,386,0.2668,58.93
+personal_status_sex,"<StringArray>
+['A94']
+Length: 1, dtype: str",0.0795,67,0.2836,56.29
+personal_status_sex,"<StringArray>
+['A92']
+Length: 1, dtype: str",-0.2461,209,0.3541,46.09
+personal_status_sex,"<StringArray>
+['A91']
+Length: 1, dtype: str",-0.3083,38,0.3684,44.13
+other_installment_plans,"<StringArray>
+['A143']
+Length: 1, dtype: str",0.1746,563,0.2647,57.24
+other_installment_plans,"<StringArray>
+['A142']
+Length: 1, dtype: str",-0.3083,38,0.3684,47.73
+other_installment_plans,"<StringArray>
+['A141']
+Length: 1, dtype: str",-0.7462,99,0.4747,39.1
