@@ -1,0 +1,47 @@
+[
+  {
+    "cutoff": 950,
+    "n_approved": 148,
+    "n_rejected": 2,
+    "approval_rate": 0.987,
+    "default_rate_approved": 0.2905,
+    "default_rate_rejected": 1.0,
+    "defaults_avoided": 2
+  },
+  {
+    "cutoff": 1000,
+    "n_approved": 123,
+    "n_rejected": 27,
+    "approval_rate": 0.82,
+    "default_rate_approved": 0.2033,
+    "default_rate_rejected": 0.7407,
+    "defaults_avoided": 20
+  },
+  {
+    "cutoff": 1020,
+    "n_approved": 102,
+    "n_rejected": 48,
+    "approval_rate": 0.68,
+    "default_rate_approved": 0.1373,
+    "default_rate_rejected": 0.6458,
+    "defaults_avoided": 31
+  },
+  {
+    "cutoff": 1050,
+    "n_approved": 67,
+    "n_rejected": 83,
+    "approval_rate": 0.447,
+    "default_rate_approved": 0.1045,
+    "default_rate_rejected": 0.4578,
+    "defaults_avoided": 38
+  },
+  {
+    "cutoff": 1080,
+    "n_approved": 31,
+    "n_rejected": 119,
+    "approval_rate": 0.207,
+    "default_rate_approved": 0.0645,
+    "default_rate_rejected": 0.3613,
+    "defaults_avoided": 43
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "cutoffs": {
+    "refus": 950,
+    "revue": 1020,
+    "approbation": 1080
+  },
+  "tranches": {
+    "n_clients": {
+      "Refus": 2,
+      "Revue": 46,
+      "Approbation": 71,
+      "Approbation (haut)": 31
+    },
+    "n_defaults": {
+      "Refus": 2,
+      "Revue": 29,
+      "Approbation": 12,
+      "Approbation (haut)": 2
+    },
+    "default_rate": {
+      "Refus": 1.0,
+      "Revue": 0.6304,
+      "Approbation": 0.169,
+      "Approbation (haut)": 0.0645
+    },
+    "score_min": {
+      "Refus": 926.5197,
+      "Revue": 953.6797,
+      "Approbation": 1020.0697,
+      "Approbation (haut)": 1081.2897
+    },
+    "score_max": {
+      "Refus": 940.8997,
+      "Revue": 1019.1697,
+      "Approbation": 1077.6497,
+      "Approbation (haut)": 1164.5197
+    }
+  },
+  "stress_tests": {
+    "psi_shift_50": 0.8251,
+    "auc_stress": 0.9636,
+    "psi_drift": 0.9317
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "train": {
+    "dataset": "Train",
+    "n_obs": 700,
+    "default_rate": 0.3,
+    "score_min": 918.89,
+    "score_max": 1147.88,
+    "score_mean": 1038.45,
+    "AUC": 0.8377,
+    "Gini": 0.6754,
+    "KS": 0.5592,
+    "KS_pvalue": 0.0
+  },
+  "test": {
+    "dataset": "Test",
+    "n_obs": 150,
+    "default_rate": 0.3,
+    "score_min": 926.52,
+    "score_max": 1164.52,
+    "score_mean": 1042.09,
+    "AUC": 0.8154,
+    "Gini": 0.6309,
+    "KS": 0.5524,
+    "KS_pvalue": 0.0
+  },
+  "PSI": 0.0375
+}

@@ -24,8 +24,14 @@ from scorecard import (
     build_scorecard, calculate_score, save_scorecard_artifacts,
     score_distribution, load_scaling_params,
 )
+from verification import (
+    verify_metrics, check_calibration, check_rank_ordering,
+    check_leakage, override_analysis, plot_calibration_curve,
+    plot_roc_curve, plot_score_distribution, plot_rank_ordering,
+    load_all_artifacts,
+)
 
-from data_loader import ( load_datas)
+from data_loader import load_datas
 
 def phase_1_to_5():
     print("=" * 60)
@@ -34,7 +40,7 @@ def phase_1_to_5():
     import os
     print(os.getcwd())  # chemin absolu du dossier courant
 
-    df= load_datas("data/raw/dataset_original.csv",db_path="data/processed/german_credit.db",sql_path="data/sql/schema.sql")
+    df = load_datas("data/raw/dataset_original.csv", db_path="data/processed/german_credit.db")
     
 
 
@@ -166,24 +172,43 @@ def phase_8():
 
 
 def phase_9():
+    """Phase 9 : validation statistique complete."""
     print("=" * 60)
     print("PHASE 9 : Validation")
     print("=" * 60)
 
-    train_df = pd.read_parquet("../data/processed/train_scores_with_target.parquet")
-    test_df = pd.read_parquet("../data/processed/test_scores_with_target.parquet")
+    artifacts = load_all_artifacts()
+    train_df = artifacts["train_df"]
+    test_df = artifacts["test_df"]
+    params = artifacts["scaling_params"]
 
-    from sklearn.metrics import roc_auc_score
+    results = verify_metrics(train_df, test_df)
+    print(f"Train : AUC={results['train']['AUC']}, Gini={results['train']['Gini']}, KS={results['train']['KS']}")
+    print(f"Test  : AUC={results['test']['AUC']}, Gini={results['test']['Gini']}, KS={results['test']['KS']}")
+    print(f"PSI   : {results['PSI']}")
 
-    for name, df in [("Train", train_df), ("Test", test_df)]:
-        auc = roc_auc_score(df["default"], -df["score"])
-        print(f"{name} — AUC: {auc:.4f}")
+    cal = check_calibration(test_df, params["Factor"], params["Offset"], params["intercept"])
+    print(f"Calibration : Brier={cal['brier_score']}, proba_mean={cal['proba_mean']}, default_rate={cal['default_rate']}")
 
-    psi = calc_psi(train_df["score"], test_df["score"])
-    print(f"PSI (score) : {psi:.4f} ({interpret_psi(psi)})")
+    ro = check_rank_ordering(test_df)
+    print(f"Rank ordering : monotone={ro['is_monotonic']}, bins={ro['n_bins']}, decreasing={ro['n_decreasing']}")
 
-    print("Phase 9 terminee (a completer avec KS, Gini, calibration)")
+    leakage = check_leakage(train_df, test_df)
+    print(f"Leakage : auc_gap={leakage['auc_gap']}, auc_gap_ok={leakage['auc_gap_ok']}")
 
+    overrides = override_analysis(test_df, threshold=950)
+    print(f"Overrides : {overrides['n_overrides']} ({overrides['override_rate']:.1%})")
+
+    import os
+    os.makedirs("../models", exist_ok=True)
+    plot_calibration_curve(train_df, test_df, params["Factor"], params["Offset"], params["intercept"],
+                           save_path="../models/calibration_curve.png")
+    plot_roc_curve(test_df, save_path="../models/roc_curve.png")
+    plot_score_distribution(train_df, test_df, save_path="../models/score_distribution.png")
+    plot_rank_ordering(test_df, n_bins=5, save_path="../models/rank_ordering.png")
+
+    print("Phase 9 terminee")
+    return results
 
 def run_pipeline(start_phase=1):
     if start_phase <= 5:

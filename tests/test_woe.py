@@ -256,19 +256,19 @@ class TestCalcPsi:
 
 class TestInterpretPsi:
     def test_stable(self):
-        assert interpret_psi(0.05) == "Stable (pas de drift)"
+        assert interpret_psi(0.05) == "Stable (no drift)"
 
     def test_moderate(self):
-        assert interpret_psi(0.15) == "Drift modere (a surveiller)"
+        assert interpret_psi(0.15) == "Moderate drift (monitor)"
 
     def test_significant(self):
-        assert interpret_psi(0.30) == "Drift significatif (recalibration necessaire)"
+        assert interpret_psi(0.30) == "Significant drift (recalibration needed)"
 
     def test_boundary_0_1(self):
-        assert interpret_psi(0.1) == "Drift modere (a surveiller)"
+        assert interpret_psi(0.1) == "Moderate drift (monitor)"
 
     def test_boundary_0_25(self):
-        assert interpret_psi(0.25) == "Drift significatif (recalibration necessaire)"
+        assert interpret_psi(0.25) == "Significant drift (recalibration needed)"
 
 
 # ---------------------------------------------------------------------------

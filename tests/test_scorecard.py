@@ -222,7 +222,7 @@ class TestScoreDistribution:
         scores = pd.Series([100, 200, 300, 400, 500])
         score_distribution(scores, label="test")
         captured = capsys.readouterr()
-        assert "Distribution des scores" in captured.out
+        assert "Score distribution" in captured.out
 
 """Tests for src/scorecard.py — Phase 8 scorecard scaling functions.
 
@@ -448,4 +448,4 @@ class TestScoreDistribution:
         scores = pd.Series([100, 200, 300, 400, 500])
         score_distribution(scores, label="test")
         captured = capsys.readouterr()
-        assert "Distribution des scores" in captured.out
+        assert "Score distribution" in captured.out
