@@ -1,0 +1,20 @@
+[
+  {
+    "model":"Scorecard (Champion)",
+    "AUC":0.8154497354,
+    "Gini":0.6308994709,
+    "total_cost":79.0,
+    "approval_rate":0.4533333333,
+    "bad_accepted":7,
+    "good_rejected":44
+  },
+  {
+    "model":"Challenger",
+    "AUC":0.7659259259,
+    "Gini":0.5318518519,
+    "total_cost":98.0,
+    "approval_rate":0.5666666667,
+    "bad_accepted":13,
+    "good_rejected":33
+  }
+]

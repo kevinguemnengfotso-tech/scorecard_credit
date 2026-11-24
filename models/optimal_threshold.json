@@ -1,0 +1,6 @@
+{
+  "optimal_pd": 0.1667,
+  "optimal_score": 1049.11,
+  "rule": "accept if score > optimal_score",
+  "derivation": "5*PD = 1*(1-PD) -> PD = 1/6"
+}

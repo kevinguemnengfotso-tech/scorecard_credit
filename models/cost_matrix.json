@@ -1,0 +1,5 @@
+{
+  "cost_reject_good": 1,
+  "cost_accept_bad": 5,
+  "source": "UCI / Statlog German Credit dataset"
+}
