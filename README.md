@@ -165,8 +165,7 @@ The challengers remain benchmarks; they are not deployed.
 - Small dataset (1000 observations); no out-of-time split available (no dates)
 - Reject inference not implemented (model trained on accepted applicants only)
 - Sensitive attributes (sex) retained; covered by an impact analysis
-- Lift figure in notebook 06 currently plots overlapping curves; to be consolidated
-- CI workflow present but its lint path still refers to another project
+
 
 ---
 
