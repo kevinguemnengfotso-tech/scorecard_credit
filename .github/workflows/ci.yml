@@ -24,7 +24,7 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          flake8 pricing_engine/ tests/ --max-line-length=120 --extend-ignore=W292,W391,W293
+          flake8 src/ tests/ --max-line-length=120 --extend-ignore=W292,W391,W293
 
       - name: Run tests with pytest
         run: |
