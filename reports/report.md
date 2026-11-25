@@ -131,6 +131,27 @@ en environnement réglementé : ils servent de benchmarks.
 
 ---
 
+## 8.5 Adverse-impact et reason codes
+
+Le modèle conserve `personal_status_sex` (variable UCI mêlant statut marital et sexe).
+Une analyse par groupe a été ajoutée dans le notebook 07 (`src/credit_risk.py::adverse_impact_by_group`).
+
+| Groupe | n | Taux d'approbation | Taux de défaut | Coût moyen |
+|---|---:|---:|---:|---:|
+| A91 (homme marié) | 3 | 33,3 % | 66,7 % | 0,000 |
+| A92 (femme divorcée) | 54 | 40,7 % | 35,2 % | 0,463 |
+| A93 (homme célibataire) | 80 | 50,0 % | 25,0 % | 0,550 |
+| A94 (femme mariée) | 13 | 38,5 % | 30,8 % | 0,769 |
+
+Écart maximal de coût moyen entre groupes : **0,769 unité**. Sur ce jeu de test,
+l'écart reste modeste mais le groupe A91 n'a que 3 observations — résultat non significatif.
+Le printemps suivant l'octroi devra faire l'objet d'un monitoring dédié avant toute mise en production.
+
+**Reason codes.** Pour chaque refus, les trois variables ayant retiré le plus de points sont
+extraites de `models/scorecard.csv` (mapping WoE → points par bin, arrondi à 4 décimales).
+Exemples : `duration`, `credit_amount`, `credit_history` pour le client 915.
+La fonction `reason_codes_for_client()` remplace l'ancienne approximation par moyenne de variable.
+
 ## 9. Hypothèses et limitations
 
 - Dataset petit (1000 observations) → stabilité limitée

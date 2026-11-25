@@ -165,7 +165,7 @@ The challengers remain benchmarks; they are not deployed.
 
 - Small dataset (1000 observations); no out-of-time split available (no dates)
 - Reject inference not implemented (model trained on accepted applicants only)
-- Sensitive attributes (sex) retained; covered by an impact analysis
+- Sensitive attribute `personal_status_sex` retained; per-group adverse-impact table in notebook 07 (max mean-cost gap 0.77 units, A91 only 3 obs — not significant)
 
 
 ---

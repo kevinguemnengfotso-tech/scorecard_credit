@@ -1,0 +1,11 @@
+{
+  "lgd_assumption": 0.45,
+  "ead_proxy": "credit_amount (Attribute5)",
+  "ccf": "not estimable - no off-balance-sheet commitment",
+  "pd_lifetime_rule": "PD_12m * duration / 12",
+  "sicr_rule": "PD_lifetime > 2 * PD_12m",
+  "el_total": 77918.29,
+  "provision_total": 108672.26,
+  "provision_stressed": 145417.33,
+  "grading_monotone": true
+}

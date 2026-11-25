@@ -1,10 +1,11 @@
-"""Expected Loss, IFRS 9 staging and adverse-action reasons.
+"""Expected Loss, IFRS 9 staging, adverse-action reasons and fairness checks.
 
 German Credit has no collateral, no maturity ladder and no undrawn
 commitments: LGD/EAD/CCF are therefore explicit assumptions, not estimates.
 """
 
 import numpy as np
+import pandas as pd
 
 
 def expected_loss(pd_: np.ndarray, lgd: float, ead: np.ndarray) -> np.ndarray:
@@ -53,3 +54,43 @@ def top_reason_codes(client_woe: np.ndarray, features: list,
         key=lambda x: x[1],
     )
     return contrib[:n]
+
+
+
+def adverse_impact_by_group(groups, y_true, approved) -> pd.DataFrame:
+    """Per-group approval rate, default rate and cost.
+
+    Cost per client: 5 if a bad client is accepted, 1 if a good client is rejected.
+    """
+    y = np.asarray(y_true)
+    dec = np.asarray(approved, dtype=bool)
+    g = np.asarray(groups)
+    cost = 5 * ((y == 1) & dec) + ((y == 0) & ~dec)
+    rows = []
+    for grp in np.unique(g):
+        m = g == grp
+        rows.append({
+            "group": int(grp) if isinstance(grp, (int, np.integer)) else str(grp),
+            "n": int(m.sum()),
+            "approval_rate": float(dec[m].mean()),
+            "default_rate": float(y[m].mean()),
+            "mean_cost": float(cost[m].mean()),
+            "total_cost": float(cost[m].sum()),
+        })
+    return pd.DataFrame(rows).sort_values("mean_cost")
+
+
+def reason_codes_for_client(client_woe, features: list,
+                            scorecard_df: pd.DataFrame, n: int = 3) -> list:
+    """Top n variables with the lowest points for one client.
+
+    Uses the exact bin mapping from scorecard.csv (WoE rounded to 4 decimals),
+    not a per-variable average.
+    """
+    rows = []
+    for var in features:
+        sub = scorecard_df[scorecard_df["variable"] == var]
+        mapping = dict(zip(sub["woe"].round(4), sub["points"]))
+        val = round(float(client_woe[var]), 4)
+        rows.append((var, float(mapping.get(val, 0.0))))
+    return sorted(rows, key=lambda x: x[1])[:n]
