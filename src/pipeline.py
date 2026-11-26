@@ -45,7 +45,7 @@ def phase_1_to_5():
 
 
   #  df = load_data_from_db("../data/processed/german_credit.db")
-    print(f"Donnees brutes : {df.shape}")
+    print(f"Raw data: {df.shape}")
 
     target_col = "res"
     feature_cols = [c for c in df.columns if c != target_col]
@@ -63,13 +63,13 @@ def phase_1_to_5():
     y_val.to_frame("res").to_parquet("../data/processed/y_val.parquet")
     y_test.to_frame("res").to_parquet("../data/processed/y_test.parquet")
 
-    print("Phases 1-5 terminees")
+    print("Phases 1-5 completed")
     return X_train, X_val, X_test, y_train, y_val, y_test
 
 
 def phase_6(X_train=None, X_val=None, X_test=None, y_train=None):
     print("=" * 60)
-    print("PHASE 6 : Binning optimal & WoE")
+    print("PHASE 6 : Optimal binning & WoE")
     print("=" * 60)
 
     if X_train is None:
@@ -88,8 +88,8 @@ def phase_6(X_train=None, X_val=None, X_test=None, y_train=None):
     print(df_woe_train.shape)
     print("\n \n")
     selected, summary = select_features_by_iv(bp, threshold=0.02)
-    print(f"Variables retenues par IV : {selected}")
-    print(f'nombre de varaibles retenues : {len(selected)}')
+    print(f"Selected by IV: {selected}")
+    print(f'Number of selected variables: {len(selected)}')
     save_iv_selected_features(selected)
 
     redundancy = check_redundancy(df_woe_train, selected)
@@ -97,13 +97,13 @@ def phase_6(X_train=None, X_val=None, X_test=None, y_train=None):
 
     save_woe_artifacts(bp, df_woe_train, df_woe_test, df_woe_val)
 
-    print("Phase 6 terminee")
+    print("Phase 6 completed")
     return bp, df_woe_train, df_woe_test, df_woe_val
 
 
 def phase_7():
     print("=" * 60)
-    print("PHASE 7 : Construction du modele")
+    print("PHASE 7 : Model building")
     print("=" * 60)
 
     X_train, X_test, y_train, y_test = load_woe_data()
@@ -122,7 +122,7 @@ def phase_7():
     if to_drop:
         X_train = X_train.drop(columns=to_drop)
         X_test = X_test.drop(columns=to_drop)
-        print(f"Variables eliminees (VIF) : {to_drop}")
+        print(f"Variables dropped (VIF): {to_drop}")
     print(f'SHAPE XTRAIN : {X_train.shape}')
     print(X_train)
     print('\n \n \n')
@@ -138,7 +138,7 @@ def phase_7():
 
     save_model(model_sk, selected_features)
 
-    print("Phase 7 terminee")
+    print("Phase 7 completed")
     return model_sk, selected_features, final_model
 
 
@@ -158,8 +158,8 @@ def phase_8():
     train_scores = calculate_score(X_train_woe, selected_features, scorecard, Factor, Offset, intercept)
     test_scores = calculate_score(X_test_woe, selected_features, scorecard, Factor, Offset, intercept)
 
-    print(f"Score train — min: {train_scores.min():.1f}, max: {train_scores.max():.1f}, mean: {train_scores.mean():.1f}")
-    print(f"Score test  — min: {test_scores.min():.1f}, max: {test_scores.max():.1f}, mean: {test_scores.mean():.1f}")
+    print(f"Train score - min: {train_scores.min():.1f}, max: {train_scores.max():.1f}, mean: {train_scores.mean():.1f}")
+    print(f"Test score - min: {test_scores.min():.1f}, max: {test_scores.max():.1f}, mean: {test_scores.mean():.1f}")
 
     score_distribution(train_scores, label="train")
     score_distribution(test_scores, label="test")
@@ -167,7 +167,7 @@ def phase_8():
     scaling_params["intercept"] = intercept
     save_scorecard_artifacts(scorecard, scaling_params, train_scores, test_scores)
 
-    print("Phase 8 terminee")
+    print("Phase 8 completed")
     return scorecard, scaling_params, train_scores, test_scores
 
 
@@ -207,7 +207,7 @@ def phase_9():
     plot_score_distribution(train_df, test_df, save_path="../models/score_distribution.png")
     plot_rank_ordering(test_df, n_bins=5, save_path="../models/rank_ordering.png")
 
-    print("Phase 9 terminee")
+    print("Phase 9 completed")
     return results
 
 def run_pipeline(start_phase=1):
@@ -224,7 +224,7 @@ def run_pipeline(start_phase=1):
         phase_9()
 
     print("\n" + "=" * 60)
-    print("PIPELINE TERMINEE")
+    print("PIPELINE COMPLETED")
     print("=" * 60)
 
 

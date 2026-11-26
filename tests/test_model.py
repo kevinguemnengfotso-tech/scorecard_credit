@@ -240,5 +240,4 @@ def test_save_model_creates_files(sample_data, tmp_path):
 
 
 
-##Rappel lancement de test
-# pyhton -m pytest tests/test_model.py
+# Run with: python -m pytest tests/test_model.py

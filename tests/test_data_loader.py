@@ -7,7 +7,7 @@ from src.data_loader import load_data
 
 @pytest.fixture(autouse=True)
 def cleanup():
-  """Nettoie la base de test avant et après chaque test."""
+  """Clean the test database before and after each test."""
   db_path = "data/processed/test.db"
   if os.path.exists(db_path):
     os.remove(db_path)
@@ -17,7 +17,7 @@ def cleanup():
 
 
 def test_load_data_shape():
-  """Vérifie que les données chargées ont la bonne forme."""
+  """Check that loaded data has the expected shape."""
   df = load_data("data/raw/dataset_original.csv", "data/processed/test.db")
   assert df.shape[0] == 1000
   assert "res" in df.columns
@@ -25,15 +25,15 @@ def test_load_data_shape():
 
 
 def test_load_data_no_nulls():
-  """Vérifie qu'il n'y a pas de valeurs manquantes."""
+  """Check that there are no missing values."""
   df = load_data("data/raw/dataset_original.csv", "data/processed/test.db")
   assert df.isnull().sum().sum() == 0
 
 
 def test_load_data_sql():
-  """Vérifie que la base SQLite est créée et contient les données."""
+  """Check that the SQLite database is created and contains data."""
   db_path = "data/processed/test.db"
-  # On charge d'abord pour créer la base et la table
+  # Load first to create the database and table
   load_data("data/raw/dataset_original.csv", db_path)
 
   conn = sqlite3.connect(db_path)
@@ -43,8 +43,8 @@ def test_load_data_sql():
 
 
 def test_load_data_target_distribution():
-  """Vérifie la distribution de la target."""
+  """Check the target distribution."""
   df = load_data("data/raw/dataset_original.csv", "data/processed/test.db")
-  # Vérifie les proportions du dataset (700 / 300)
+  # Check dataset proportions (700 / 300)
   assert df["res"].value_counts()[0] == 700
   assert df["res"].value_counts()[1] == 300

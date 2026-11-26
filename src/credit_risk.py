@@ -9,25 +9,24 @@ import pandas as pd
 
 
 def expected_loss(pd_: np.ndarray, lgd: float, ead: np.ndarray) -> np.ndarray:
-    """Calcule la perte attendue en euros : PD × LGD × EAD.
+    """Compute expected loss in currency units: PD * LGD * EAD.
 
-    Exemple : PD=0,02, LGD=0,45, EAD=10 000 -> EL = 90 EUR.
+    Example: PD=0.02, LGD=0.45, EAD=10,000 -> EL = 90.
     """
     return np.asarray(pd_) * lgd * np.asarray(ead)
 
 
 def stressed_lgd(lgd: float, factor: float = 1.25) -> float:
-    """Aggrave la LGD en cas de récession (ex. 0,45 -> 0,5625), plafonné à 1."""
+    """Increase LGD under a recession (e.g. 0.45 -> 0.5625), capped at 1."""
     return min(1.0, lgd * factor)
 
 
 def ifrs9_stage(pd_12m: np.ndarray, pd_lifetime: np.ndarray,
                 sicr_threshold: float = 2.0,
                 default_flag: np.ndarray | None = None) -> np.ndarray:
-    """Classe chaque client dans un stade comptable IFRS 9.
+    """Assign each client an IFRS 9 stage: 1 = normal, 2 = SICR, 3 = default.
 
-    1 = risque normal ; 2 = détérioration (SICR) ; 3 = défaut.
-    La règle utilisée ici : lifetime PD > 2 × PD 12 mois -> stade 2.
+    Rule used here: lifetime PD > 2 * 12-month PD -> stage 2.
     """
     stage = np.ones(len(pd_12m), dtype=int)
     stage[pd_lifetime > sicr_threshold * pd_12m] = 2
@@ -37,7 +36,7 @@ def ifrs9_stage(pd_12m: np.ndarray, pd_lifetime: np.ndarray,
 
 
 def provision(pd_12m, pd_lifetime, lgd, ead, stage) -> np.ndarray:
-    """Provision à mettre de côté : EL 12 mois en stade 1, EL lifetime sinon."""
+    """Provision amount: 12-month EL for stage 1, lifetime EL otherwise."""
     el_12 = expected_loss(pd_12m, lgd, ead)
     el_life = expected_loss(pd_lifetime, lgd, ead)
     return np.where(stage == 1, el_12, el_life)
@@ -45,9 +44,9 @@ def provision(pd_12m, pd_lifetime, lgd, ead, stage) -> np.ndarray:
 
 def top_reason_codes(client_woe: np.ndarray, features: list,
                      scorecard_points: dict, n: int = 3) -> list:
-    """Retourne les n variables qui ont coûté le plus de points à un client refusé.
+    """Return the n variables with the lowest points for a rejected client.
 
-    Scorecard_points : mapping {variable: points} issu de models/scorecard.csv.
+    scorecard_points maps {variable: points} from models/scorecard.csv.
     """
     contrib = sorted(
         [(var, float(scorecard_points.get(var, 0.0))) for var in features],

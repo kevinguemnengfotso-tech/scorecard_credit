@@ -69,7 +69,7 @@ class TestComputeMetrics:
 
     def test_gini_formula(self, sample_scores):
         m = compute_metrics(sample_scores)
-        # Arrondi à 4 décimales → tolérance 1e-3
+        # Rounded to 4 decimals -> tolerance 1e-3
         assert abs(m["Gini"] - (2 * m["AUC"] - 1)) < 1e-3
 
     def test_n_obs_matches(self, sample_scores):
